@@ -2,3 +2,12 @@
 
 %:
 	dh $@
+
+override_dh_auto_configure:
+	sh configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc \
+		--mandir=/usr/share/man CFLAGS="$(CFLAGS)" LDFLAGS="-Wl,-z,defs"
+
+override_dh_auto_install:
+	dh_auto_install
+	-rm $(CURDIR)/debian/tmp/usr/lib/*.la
+	-rm -f $(CURDIR)/debian/tmp/usr/share/man/man1/fstrcmp_license.1
